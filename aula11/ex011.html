@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Praticando</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font: normal 12pt Arial;
+        }
+    </style>
+</head>
+<body>
+    <h1> Testando sua naturalidade </h1>
+    <div id="n"> </div>
+    Onde você nasceu? <input type="text" name="txtp" id="txtp">
+    <input type="button" value="verificar" onclick="naturalidade()">
+    <script>
+        function naturalidade() {
+            var txtp = window.document.getElementById('txtp')// país
+            var n = window.document.getElementById('n') // naturalidade
+
+            if (txtp = 'brasil') {
+                n.innerHTML += `<p> Você nasceu no ${txtp}, logo você é brasileiro!</p>`
+            } else {
+                n.innerHTML += `<p> Você é estrangeiro!</p>`
+            }   
+        }
+    </script>
+</body>
+</html>

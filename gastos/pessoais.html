@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Controle de Gastos Pessoais</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Controle de Gastos Pessoais</h1>
+
+    <label for="descricao">Descrição: </label>
+    <input type="text" id="descricao">
+    <label for="valor">Valor: </label>
+    <input type="number" id="valor">
+    <button id="adicionar">Adicionar Despesa</button>
+
+    <h2>Despesas:</h2>
+    <ul id="lista-despesas"></ul>
+
+    <h2>Resumo:</h2>
+    <p>Total de Despesas: <span id="total-despesas">0</span></p>
+
+    <script>
+        // Elementos do DOM
+        const descricaoInput = document.getElementById("descricao");
+        const valorInput = document.getElementById("valor");
+        const adicionarButton = document.getElementById("adicionar");
+        const listaDespesas = document.getElementById("lista-despesas");
+        const totalDespesas = document.getElementById("total-despesas");
+
+        let despesas = [];
+
+        // Função para adicionar uma despesa
+        adicionarButton.addEventListener("click", function () {
+            const descricao = descricaoInput.value;
+            const valor = parseFloat(valorInput.value);
+
+            if (descricao !== "" && !isNaN(valor)) {
+                const despesa = { descricao, valor };
+                despesas.push(despesa);
+                atualizarListaDespesas();
+                atualizarTotalDespesas();
+                salvarDespesas();
+                descricaoInput.value = "";
+                valorInput.value = "";
+            }
+        });
+
+        // Função para atualizar a lista de despesas
+        function atualizarListaDespesas() {
+            listaDespesas.innerHTML = "";
+            despesas.forEach(function (despesa) {
+                const item = document.createElement("li");
+                item.textContent = `${despesa.descricao}: R$ ${despesa.valor}`;
+                listaDespesas.appendChild(item);
+            });
+        }
+
+        // Função para atualizar o total de despesas
+        function atualizarTotalDespesas() {
+            const total = despesas.reduce((acumulador, despesa) => acumulador + despesa.valor, 0);
+            totalDespesas.textContent = total.toFixed(2);
+        }
+
+        // Função para salvar as despesas no armazenamento local
+        function salvarDespesas() {
+            const data = new Date();
+            const mes = data.getMonth() + 1; // Adiciona 1, pois janeiro é 0
+            const ano = data.getFullYear();
+
+            const pasta = `gastos/${ano}-${mes}`;
+            const arquivo = `despesas.json`;
+            const dados = JSON.stringify(despesas);
+
+            // Cria a pasta se não existir
+            if (!localStorage.getItem(pasta)) {
+                localStorage.setItem(pasta, JSON.stringify([]));
+            }
+
+            // Salva as despesas
+            localStorage.setItem(`${pasta}/${arquivo}`, dados);
+        }
+    </script>
+</body>
+</html>
